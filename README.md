@@ -1,4 +1,4 @@
-# Hierarchical-Menu-System
+# Hierarchical Menu System
 The Hierarchical Menu Management System is a console-based application designed to facilitate the creation and management of hierarchical menus for console-based applications.
 This system enables developers to build and navigate complex menu structures efficiently, using both interfaces and delegates.
 
