@@ -9,7 +9,7 @@ namespace Menus.Interfaces
     /// <summary>
     /// Defines a contract for objects that can execute an action.
     /// </summary>
-    public interface IActionExector
+    public interface IActionExecutor
     {
         /// <summary>
         /// Performs the action associated with this executor.

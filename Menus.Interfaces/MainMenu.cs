@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Menus.Interfaces
 {
     /// <summary>
-    /// Represents the root of a hierarchical menu system using the <see cref="IActionExector"/>
+    /// Represents the root of a hierarchical menu system using the <see cref="IActionExecutor"/>
     /// interface for menu actions. Provides a simple API for building and displaying
     /// console-based menus with nested submenus.
     /// </summary>

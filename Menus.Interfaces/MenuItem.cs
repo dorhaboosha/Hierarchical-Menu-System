@@ -8,13 +8,13 @@ namespace Menus.Interfaces
 {
     /// <summary>
     /// Represents a single item in the hierarchical menu. Can act as either a submenu
-    /// (containing child items) or an action item (with an <see cref="IActionExector"/> that performs the action).
+    /// (containing child items) or an action item (with an <see cref="IActionExecutor"/> that performs the action).
     /// </summary>
     public class MenuItem
     {
         private readonly string r_Title;
         private readonly List<MenuItem> r_ChildrenMenuItems;
-        private readonly IActionExector r_MenuItemAction;
+        private readonly IActionExecutor r_MenuItemAction;
         private MenuItem m_ParentMenuItem;
         private const int k_BackAndExitOptionNumber = 0;
 
@@ -23,7 +23,7 @@ namespace Menus.Interfaces
         /// </summary>
         /// <param name="i_Title">The title displayed for this menu option.</param>
         /// <param name="i_MenuItemAction">Optional. The action executor for when this item is selected. If null, this item acts as a submenu.</param>
-        public MenuItem(string i_Title, IActionExector i_MenuItemAction = null)
+        public MenuItem(string i_Title, IActionExecutor i_MenuItemAction = null)
         {
             r_Title = i_Title;
             r_ChildrenMenuItems = new List<MenuItem>();
@@ -72,7 +72,7 @@ namespace Menus.Interfaces
         /// <summary>
         /// Gets the action executor for this menu item. Null when this item is a submenu.
         /// </summary>
-        internal IActionExector MenuItemAction
+        internal IActionExecutor MenuItemAction
         {
             get
             {
@@ -82,7 +82,7 @@ namespace Menus.Interfaces
 
         /// <summary>
         /// Adds a child menu item to this menu. Only valid for submenu items (those without
-        /// an <see cref="IActionExector"/> assigned).
+        /// an <see cref="IActionExecutor"/> assigned).
         /// </summary>
         /// <param name="i_MenuItem">The menu item to add as a child.</param>
         /// <exception cref="FormatException">Thrown when this item is an action item and cannot have children.</exception>
@@ -128,7 +128,7 @@ namespace Menus.Interfaces
 
         /// <summary>
         /// Handles the selection of this menu item. If it has children, shows the submenu;
-        /// otherwise invokes the <see cref="IActionExector.Execute"/> method.
+        /// otherwise invokes the <see cref="IActionExecutor.Execute"/> method.
         /// </summary>
         /// <exception cref="FormatException">Thrown when a submenu item has no children defined.</exception>
         internal void OnMenuItemChosen()

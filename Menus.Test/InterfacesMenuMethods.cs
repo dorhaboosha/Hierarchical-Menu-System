@@ -9,14 +9,14 @@ namespace Menus.Test
 {
     /// <summary>
     /// Contains menu action implementations for the interfaces-based menu demo.
-    /// Each nested class implements <see cref="IActionExector"/> for a specific menu option.
+    /// Each nested class implements <see cref="IActionExecutor"/> for a specific menu option.
     /// </summary>
-    public class IenterfacesMenuMethods
+    public class InterfacesMenuMethods
     {
         /// <summary>
         /// Action that displays the current date when selected from the menu.
         /// </summary>
-        public class ShowDate : IActionExector
+        public class ShowDate : IActionExecutor
         {
             /// <inheritdoc/>
             public void Execute()
@@ -28,7 +28,7 @@ namespace Menus.Test
         /// <summary>
         /// Action that displays the current time when selected from the menu.
         /// </summary>
-        public class ShowTime : IActionExector
+        public class ShowTime : IActionExecutor
         {
             /// <inheritdoc/>
             public void Execute()
@@ -40,7 +40,7 @@ namespace Menus.Test
         /// <summary>
         /// Action that displays the application version when selected from the menu.
         /// </summary>
-        public class ShowVersion : IActionExector
+        public class ShowVersion : IActionExecutor
         {
             /// <inheritdoc/>
             public void Execute()
@@ -53,7 +53,7 @@ namespace Menus.Test
         /// Action that prompts the user for a sentence and displays the count of capital letters
         /// when selected from the menu.
         /// </summary>
-        public class ShowCapitalsCount : IActionExector
+        public class ShowCapitalsCount : IActionExecutor
         {
             /// <inheritdoc/>
             public void Execute()

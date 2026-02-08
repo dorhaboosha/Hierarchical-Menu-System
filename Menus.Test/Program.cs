@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Menus;
-using static Menus.Test.IenterfacesMenuMethods;
+using static Menus.Test.InterfacesMenuMethods;
 
 namespace Menus.Test
 {
@@ -17,7 +17,7 @@ namespace Menus.Test
     {
         /// <summary>
         /// Builds the main menu using the interfaces-based implementation
-        /// (<see cref="IActionExector"/> for menu actions).
+        /// (<see cref="IActionExecutor"/> for menu actions).
         /// </summary>
         /// <returns>A configured interfaces-based main menu.</returns>
         private Interfaces.MainMenu buildInterfacesMainMenu()
