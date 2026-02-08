@@ -12,7 +12,7 @@ namespace Menus.Test
         /// <summary>
         /// Displays the current date.
         /// </summary>
-        public static void ShowDate()
+        internal static void ShowDate()
         {
             Console.WriteLine("The current date is : {0}\n\n", DateTime.Today.ToString("dd/MM/yyyy"));
         }
@@ -20,7 +20,7 @@ namespace Menus.Test
         /// <summary>
         /// Displays the current time.
         /// </summary>
-        public static void ShowTime()
+        internal static void ShowTime()
         {
             Console.WriteLine("The current time is : {0}\n\n", DateTime.Now.ToString("HH:mm:ss"));
         }
@@ -28,7 +28,7 @@ namespace Menus.Test
         /// <summary>
         /// Displays the application version.
         /// </summary>
-        public static void ShowVersion()
+        internal static void ShowVersion()
         {
             Console.WriteLine("Version : 24.2.4.9504\n\n");
         }
@@ -36,7 +36,7 @@ namespace Menus.Test
         /// <summary>
         /// Prompts the user for a sentence and displays the count of capital letters.
         /// </summary>
-        public static void ShowCapitalsCount()
+        internal static void ShowCapitalsCount()
         {
             Console.WriteLine("Please enter your sentence");
 

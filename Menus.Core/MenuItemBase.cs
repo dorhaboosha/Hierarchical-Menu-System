@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Collections.ObjectModel;
 
 namespace Menus.Core
 {
@@ -20,8 +20,14 @@ namespace Menus.Core
         /// Initializes a new instance of the <see cref="MenuItemBase{TMenuItem}"/> class.
         /// </summary>
         /// <param name="i_Title">The title displayed for this menu option.</param>
+        /// <exception cref="ArgumentException">Thrown when <paramref name="i_Title"/> is null or empty.</exception>
         protected MenuItemBase(string i_Title)
         {
+            if (string.IsNullOrEmpty(i_Title))
+            {
+                throw new ArgumentException("Menu title cannot be null or empty.", nameof(i_Title));
+            }
+
             r_Title = i_Title;
             r_ChildrenMenuItems = new List<TMenuItem>();
             m_ParentMenuItem = null;
@@ -42,9 +48,9 @@ namespace Menus.Core
         }
 
         /// <summary>
-        /// Gets the direct child menu items of this menu.
+        /// Gets a read-only view of the direct child menu items of this menu.
         /// </summary>
-        internal List<TMenuItem> ChildrenMenuItems => r_ChildrenMenuItems;
+        internal IReadOnlyList<TMenuItem> ChildrenMenuItems => r_ChildrenMenuItems.AsReadOnly();
 
         /// <summary>
         /// Indicates whether this item is an action item (vs. a submenu).
@@ -60,9 +66,15 @@ namespace Menus.Core
         /// Adds a child menu item to this menu. Only valid for submenu items.
         /// </summary>
         /// <param name="i_MenuItem">The menu item to add as a child.</param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="i_MenuItem"/> is null.</exception>
         /// <exception cref="InvalidOperationException">Thrown when this item is an action item and cannot have children.</exception>
         public void AddMenuItem(TMenuItem i_MenuItem)
         {
+            if (i_MenuItem == null)
+            {
+                throw new ArgumentNullException(nameof(i_MenuItem));
+            }
+
             if (!IsActionItem)
             {
                 r_ChildrenMenuItems.Add(i_MenuItem);
@@ -78,10 +90,16 @@ namespace Menus.Core
         /// Removes a child menu item from this menu.
         /// </summary>
         /// <param name="i_MenuItem">The menu item to remove.</param>
+        /// <exception cref="ArgumentNullException">Thrown when <paramref name="i_MenuItem"/> is null.</exception>
         /// <exception cref="InvalidOperationException">Thrown when attempting to remove from an action item.</exception>
         /// <exception cref="InvalidOperationException">Thrown when the specified menu item is not a child of this menu.</exception>
         public void RemoveMenuItem(TMenuItem i_MenuItem)
         {
+            if (i_MenuItem == null)
+            {
+                throw new ArgumentNullException(nameof(i_MenuItem));
+            }
+
             if (!IsActionItem)
             {
                 bool removed = r_ChildrenMenuItems.Remove(i_MenuItem);
@@ -101,30 +119,57 @@ namespace Menus.Core
         }
 
         /// <summary>
-        /// Handles the selection of this menu item. If it has children, shows the submenu;
-        /// otherwise invokes the action.
+        /// Displays this menu's options and handles user navigation until the user chooses to exit.
+        /// Uses an iterative loop to avoid unbounded stack growth from deep menu hierarchies.
         /// </summary>
-        /// <exception cref="InvalidOperationException">Thrown when a submenu item has no children defined.</exception>
-        internal void OnMenuItemChosen()
+        public void Show()
         {
-            if (r_ChildrenMenuItems.Count > 0)
+            TMenuItem current = (TMenuItem)this;
+
+            while (current != null)
             {
-                if (!IsActionItem)
-                {
-                    Show();
-                }
-                else
+                current.showTitle();
+                current.showMenu();
+                int userChoice = current.askUserChoice();
+
+                Console.Clear();
+
+                current = current.GetNextMenuAfterChoice(userChoice);
+            }
+        }
+
+        /// <summary>
+        /// Returns the next menu to display based on the user's choice, or null to exit.
+        /// For choice 0: returns the parent (or null at root). For choice N: either returns
+        /// the child submenu to display, or invokes the action and returns the parent.
+        /// </summary>
+        /// <param name="i_Choice">The user's choice (0 = back/exit, 1..N = child index).</param>
+        /// <returns>The next menu to display, or null to exit.</returns>
+        private TMenuItem GetNextMenuAfterChoice(int i_Choice)
+        {
+            if (i_Choice == k_BackAndExitOptionNumber)
+            {
+                return m_ParentMenuItem;
+            }
+
+            TMenuItem selectedItem = r_ChildrenMenuItems[i_Choice - 1];
+
+            if (selectedItem.r_ChildrenMenuItems.Count > 0)
+            {
+                if (selectedItem.IsActionItem)
                 {
                     throw new InvalidOperationException(
                         "Invalid menu state: item has both children and an action.");
                 }
+
+                return selectedItem;
             }
             else
             {
-                if (IsActionItem)
+                if (selectedItem.IsActionItem)
                 {
-                    InvokeAction();
-                    m_ParentMenuItem?.OnMenuItemChosen();
+                    selectedItem.InvokeAction();
+                    return m_ParentMenuItem;
                 }
                 else
                 {
@@ -133,16 +178,6 @@ namespace Menus.Core
                         "so you need to add Menu items under it that you will see them.");
                 }
             }
-        }
-
-        /// <summary>
-        /// Displays this menu's options and prompts the user for a choice.
-        /// </summary>
-        public void Show()
-        {
-            showTitle();
-            showMenu();
-            getUserChoice();
         }
 
         private void showTitle()
@@ -173,50 +208,29 @@ namespace Menus.Core
             Console.WriteLine("-----------------------");
         }
 
-        private void getUserChoice()
-        {
-            int userChoice = askUserChoice();
-
-            Console.Clear();
-
-            if (userChoice == 0)
-            {
-                if (m_ParentMenuItem != null)
-                {
-                    m_ParentMenuItem.OnMenuItemChosen();
-                }
-            }
-            else
-            {
-                r_ChildrenMenuItems[userChoice - 1].OnMenuItemChosen();
-            }
-        }
-
         private int askUserChoice()
         {
             Console.WriteLine("Enter your request: (A number between {0} to {1})",
                 k_BackAndExitOptionNumber, r_ChildrenMenuItems.Count);
-            string input = Console.ReadLine();
-            StringBuilder userOption = new StringBuilder(input ?? string.Empty);
+            string userOption = Console.ReadLine() ?? string.Empty;
 
             while (!validUserChoice(userOption))
             {
                 Console.WriteLine("The number you entered is invalid, please enter again (only number between {0} to {1}):",
                     k_BackAndExitOptionNumber, r_ChildrenMenuItems.Count);
-                userOption.Clear();
-                userOption.Append(Console.ReadLine() ?? string.Empty);
+                userOption = Console.ReadLine() ?? string.Empty;
             }
 
             int choice;
-            int.TryParse(userOption.ToString(), out choice);
+            int.TryParse(userOption, out choice);
 
             return choice;
         }
 
-        private bool validUserChoice(StringBuilder i_UserChoiceString)
+        private bool validUserChoice(string i_UserChoiceString)
         {
             int userChoiceNumber;
-            bool isParsed = int.TryParse(i_UserChoiceString.ToString(), out userChoiceNumber);
+            bool isParsed = int.TryParse(i_UserChoiceString, out userChoiceNumber);
             bool validNumberChoice = isParsed &&
                 userChoiceNumber >= k_BackAndExitOptionNumber &&
                 userChoiceNumber <= r_ChildrenMenuItems.Count;
