@@ -16,55 +16,22 @@ namespace Menus.Test
         /// <summary>
         /// Displays the current date when the "Show Date" menu option is selected.
         /// </summary>
-        public void ShowDate_Chosen()
-        {
-            Console.WriteLine("The current date is : {0}\n\n", DateTime.Today.ToString("dd/MM/yyyy"));
-        }
+        public void ShowDate_Chosen() => MenuActionsHelper.ShowDate();
 
         /// <summary>
         /// Displays the current time when the "Show Time" menu option is selected.
         /// </summary>
-        public void ShowTime_Chosen()
-        {
-            Console.WriteLine("The current time is : {0}\n\n", DateTime.Now.ToString("HH:mm:ss"));
-        }
+        public void ShowTime_Chosen() => MenuActionsHelper.ShowTime();
 
         /// <summary>
         /// Displays the application version when the "Show Version" menu option is selected.
         /// </summary>
-        public void ShowVersion_Chosen()
-        {
-            Console.WriteLine("Version : 24.2.4.9504\n\n");
-        }
+        public void ShowVersion_Chosen() => MenuActionsHelper.ShowVersion();
 
         /// <summary>
         /// Prompts the user for a sentence and displays the count of capital letters
         /// when the "Count Capitals" menu option is selected.
         /// </summary>
-        public void ShowCapitalsCount_Chosen()
-        {
-            Console.WriteLine("Please enter your sentence");
-
-            string userInput = Console.ReadLine();
-            if (userInput == null)
-            {
-                Console.WriteLine("No input provided.\n\n");
-                return;
-            }
-
-            int numberOfCapitalLetters = 0;
-            
-            for (int i = 0; i < userInput.Length; i++)
-            {
-                char currentChar = userInput[i];
-                
-                if (char.IsUpper(currentChar))
-                {
-                    numberOfCapitalLetters++;
-                }
-            }
-            
-            Console.WriteLine("There are {0} capitals in your sentence.\n\n", numberOfCapitalLetters);
-        }
+        public void ShowCapitalsCount_Chosen() => MenuActionsHelper.ShowCapitalsCount();
     }
 }

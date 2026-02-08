@@ -4,10 +4,10 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{1A56E80D-62FF-44C7-AB72-E36F557AFD47}</ProjectGuid>
+    <ProjectGuid>{8B3C9F2A-4D1E-4B5A-9F7C-2E8A6B1D4C3F}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <RootNamespace>Menus.Interfaces</RootNamespace>
-    <AssemblyName>Menus.Interfaces</AssemblyName>
+    <RootNamespace>Menus.Core</RootNamespace>
+    <AssemblyName>Menus.Core</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -39,15 +39,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IActionExecutor.cs" />
-    <Compile Include="MainMenu.cs" />
-    <Compile Include="MenuItem.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Menus.Core\Menus.Core.csproj">
-      <Project>{8b3c9f2a-4d1e-4b5a-9f7c-2e8a6b1d4c3f}</Project>
-      <Name>Menus.Core</Name>
-    </ProjectReference>
+    <Compile Include="MenuItemBase.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

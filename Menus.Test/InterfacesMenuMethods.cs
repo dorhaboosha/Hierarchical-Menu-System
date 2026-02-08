@@ -19,10 +19,7 @@ namespace Menus.Test
         public class ShowDate : IActionExecutor
         {
             /// <inheritdoc/>
-            public void Execute()
-            {
-                Console.WriteLine("The current date is : {0}\n\n", DateTime.Today.ToString("dd/MM/yyyy"));
-            }
+            public void Execute() => MenuActionsHelper.ShowDate();
         }
 
         /// <summary>
@@ -31,10 +28,7 @@ namespace Menus.Test
         public class ShowTime : IActionExecutor
         {
             /// <inheritdoc/>
-            public void Execute()
-            {
-                Console.WriteLine("The current time is : {0}\n\n", DateTime.Now.ToString("HH:mm:ss"));
-            }
+            public void Execute() => MenuActionsHelper.ShowTime();
         }
 
         /// <summary>
@@ -43,10 +37,7 @@ namespace Menus.Test
         public class ShowVersion : IActionExecutor
         {
             /// <inheritdoc/>
-            public void Execute()
-            {
-                Console.WriteLine("Version : 24.2.4.9504\n\n");
-            }
+            public void Execute() => MenuActionsHelper.ShowVersion();
         }
 
         /// <summary>
@@ -56,31 +47,7 @@ namespace Menus.Test
         public class ShowCapitalsCount : IActionExecutor
         {
             /// <inheritdoc/>
-            public void Execute()
-            {
-                Console.WriteLine("Please enter your sentence");
-                
-                string userInput = Console.ReadLine();
-                if (userInput == null)
-                {
-                    Console.WriteLine("No input provided.\n\n");
-                    return;
-                }
-
-                int numberOfCapitalLetters = 0;
-
-                for (int i = 0; i < userInput.Length; i++)
-                {
-                    char currentChar = userInput[i];
-
-                    if (char.IsUpper(currentChar))
-                    {
-                        numberOfCapitalLetters++;
-                    }
-                }
-
-                Console.WriteLine("There are {0} capitals in your sentence.\n\n", numberOfCapitalLetters);
-            }
+            public void Execute() => MenuActionsHelper.ShowCapitalsCount();
         }
     }
 }

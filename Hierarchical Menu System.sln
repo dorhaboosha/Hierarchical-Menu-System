@@ -1,8 +1,10 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Menus.Core", "Menus.Core\Menus.Core.csproj", "{8B3C9F2A-4D1E-4B5A-9F7C-2E8A6B1D4C3F}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Menus.Events", "Menus.Events\Menus.Events.csproj", "{1BB2D850-E898-4727-9653-308DB6B91591}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Menus.Interfaces", "Menus.Interfaces\Menus.Interfaces.csproj", "{1A56E80D-62FF-44C7-AB72-E36F557AFD47}"
@@ -15,6 +17,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8B3C9F2A-4D1E-4B5A-9F7C-2E8A6B1D4C3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8B3C9F2A-4D1E-4B5A-9F7C-2E8A6B1D4C3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8B3C9F2A-4D1E-4B5A-9F7C-2E8A6B1D4C3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8B3C9F2A-4D1E-4B5A-9F7C-2E8A6B1D4C3F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1BB2D850-E898-4727-9653-308DB6B91591}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1BB2D850-E898-4727-9653-308DB6B91591}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1BB2D850-E898-4727-9653-308DB6B91591}.Release|Any CPU.ActiveCfg = Release|Any CPU
