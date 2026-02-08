@@ -1,4 +1,4 @@
-﻿using Menus.Interfaces;
+using Menus.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,34 +7,55 @@ using System.Threading.Tasks;
 
 namespace Menus.Test
 {
+    /// <summary>
+    /// Contains menu action implementations for the interfaces-based menu demo.
+    /// Each nested class implements <see cref="IActionExector"/> for a specific menu option.
+    /// </summary>
     public class IenterfacesMenuMethods
     {
+        /// <summary>
+        /// Action that displays the current date when selected from the menu.
+        /// </summary>
         public class ShowDate : IActionExector
         {
+            /// <inheritdoc/>
             public void Execute()
             {
                 Console.WriteLine("The current date is : {0}\n\n", DateTime.Today.ToString("dd/MM/yyyy"));
             }
         }
 
+        /// <summary>
+        /// Action that displays the current time when selected from the menu.
+        /// </summary>
         public class ShowTime : IActionExector
         {
+            /// <inheritdoc/>
             public void Execute()
             {
                 Console.WriteLine("The current time is : {0}\n\n", DateTime.Now.ToString("HH:mm:ss"));
             }
         }
 
+        /// <summary>
+        /// Action that displays the application version when selected from the menu.
+        /// </summary>
         public class ShowVersion : IActionExector
         {
+            /// <inheritdoc/>
             public void Execute()
             {
                 Console.WriteLine("Version : 24.2.4.9504\n\n");
             }
         }
 
+        /// <summary>
+        /// Action that prompts the user for a sentence and displays the count of capital letters
+        /// when selected from the menu.
+        /// </summary>
         public class ShowCapitalsCount : IActionExector
         {
+            /// <inheritdoc/>
             public void Execute()
             {
                 Console.WriteLine("Please enter your sentence");
