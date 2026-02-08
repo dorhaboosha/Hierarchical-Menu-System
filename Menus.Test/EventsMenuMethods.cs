@@ -46,6 +46,12 @@ namespace Menus.Test
             Console.WriteLine("Please enter your sentence");
 
             string userInput = Console.ReadLine();
+            if (userInput == null)
+            {
+                Console.WriteLine("No input provided.\n\n");
+                return;
+            }
+
             int numberOfCapitalLetters = 0;
             
             for (int i = 0; i < userInput.Length; i++)

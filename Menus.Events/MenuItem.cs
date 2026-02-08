@@ -78,7 +78,7 @@ namespace Menus.Events
         /// a <see cref="MenuItemChosen"/> handler).
         /// </summary>
         /// <param name="i_MenuItem">The menu item to add as a child.</param>
-        /// <exception cref="FormatException">Thrown when this item is an action item and cannot have children.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when this item is an action item and cannot have children.</exception>
         public void AddMenuItem(MenuItem i_MenuItem)
         {
             if (MenuItemChosen == null)
@@ -88,7 +88,7 @@ namespace Menus.Events
             }
             else
             {
-                throw new FormatException("The item is a Menu Action Item, so you cann't add Menu Items under it.");
+                throw new InvalidOperationException("The item is a Menu Action Item, so you can't add Menu Items under it.");
             }
         }
 
@@ -97,10 +97,10 @@ namespace Menus.Events
         /// </summary>
         /// <param name="i_MenuItem">The menu item to remove.</param>
         /// <exception cref="Exception">Thrown when the item has no children to remove.</exception>
-        /// <exception cref="FormatException">Thrown when attempting to remove from an action item.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when attempting to remove from an action item.</exception>
         public void RemoveMenuItem(MenuItem i_MenuItem)
         {
-            if (i_MenuItem.MenuItemChosen == null)
+            if (MenuItemChosen == null)
             {
                 if (ChildrenMenuItems.Count > 0)
                 {
@@ -109,12 +109,12 @@ namespace Menus.Events
                 }
                 else
                 {
-                    throw new Exception("The Menu Item has no Menu Items unser it that can be removed from it.");
+                    throw new Exception("The Menu Item has no Menu Items under it that can be removed from it.");
                 }
             }
             else
             {
-                throw new FormatException("The item is a Menu Action Item so it has no Menu Items under it that can be removed.");
+                throw new InvalidOperationException("This item is a Menu Action Item, so it has no Menu Items under it that can be removed.");
             }
         }
 
@@ -122,7 +122,7 @@ namespace Menus.Events
         /// Handles the selection of this menu item. If it has children, shows the submenu;
         /// otherwise invokes the <see cref="MenuItemChosen"/> event.
         /// </summary>
-        /// <exception cref="FormatException">Thrown when a submenu item has no children defined.</exception>
+        /// <exception cref="InvalidOperationException">Thrown when a submenu item has no children defined.</exception>
         protected virtual void OnMenuItemChosen()
         {
             if (r_ChildrenMenuItems.Count > 0)
@@ -130,6 +130,11 @@ namespace Menus.Events
                 if (MenuItemChosen == null)
                 {
                     Show();
+                }
+                else
+                {
+                    throw new InvalidOperationException(
+                        "Invalid menu state: item has both children and an action handler.");
                 }
             }
             else
@@ -141,7 +146,7 @@ namespace Menus.Events
                 }
                 else
                 {
-                    throw new FormatException("You defined this Menu Item such that it has other Menu Items under it, " +
+                    throw new InvalidOperationException("You defined this Menu Item such that it has other Menu Items under it, " +
                         "so you need to add Menu items under it that you will see them.");
                 }
             }
@@ -227,14 +232,13 @@ namespace Menus.Events
 
         private bool validUserChoice(StringBuilder i_UserChoiceString)
         {
-            bool inputIsNullOrEmpty = string.IsNullOrEmpty(i_UserChoiceString.ToString());
-            bool inputIsOneNumber = i_UserChoiceString.Length == 1 && Char.IsDigit(i_UserChoiceString[0]);
             int userChoiceNumber;
-            int.TryParse(i_UserChoiceString.ToString(), out userChoiceNumber);
-            bool validNumberChoice = userChoiceNumber >= k_BackAndExitOptionNumber &&
+            bool isParsed = int.TryParse(i_UserChoiceString.ToString(), out userChoiceNumber);
+            bool validNumberChoice = isParsed &&
+                userChoiceNumber >= k_BackAndExitOptionNumber &&
                 userChoiceNumber <= r_ChildrenMenuItems.Count;
 
-            return !inputIsNullOrEmpty && inputIsOneNumber && validNumberChoice;
+            return validNumberChoice;
         }
 
         /// <summary>
