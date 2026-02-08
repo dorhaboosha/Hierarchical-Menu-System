@@ -1,16 +1,25 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using Menus;
-using static Menus.Test.IenterfacesMenuMethods;
+using static Menus.Test.InterfacesMenuMethods;
 
 namespace Menus.Test
 {
+    /// <summary>
+    /// Demo application that demonstrates both the interfaces-based and events-based
+    /// hierarchical menu implementations with identical menu structures.
+    /// </summary>
     public class Program
     {
+        /// <summary>
+        /// Builds the main menu using the interfaces-based implementation
+        /// (<see cref="IActionExecutor"/> for menu actions).
+        /// </summary>
+        /// <returns>A configured interfaces-based main menu.</returns>
         private Interfaces.MainMenu buildInterfacesMainMenu()
         {
             Interfaces.MainMenu interfaceMainMenu = new Interfaces.MainMenu("Interfaces Main Menu");
@@ -34,6 +43,11 @@ namespace Menus.Test
             return interfaceMainMenu;
         }
 
+        /// <summary>
+        /// Builds the main menu using the events-based implementation
+        /// (delegates for menu actions).
+        /// </summary>
+        /// <returns>A configured events-based main menu.</returns>
         private Events.MainMenu buildEventsMainMenu()
         {
             Events.MainMenu eventsMainMenu = new Events.MainMenu("Delegates Main Menu");
@@ -65,6 +79,9 @@ namespace Menus.Test
             return eventsMainMenu;
         }
 
+        /// <summary>
+        /// Application entry point. Builds and displays both menu implementations in sequence.
+        /// </summary>
         public static void Main()
         {
             Program MainMenusprogram = new Program();

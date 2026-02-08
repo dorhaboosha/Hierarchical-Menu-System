@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -40,10 +40,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EventsMenuMethods.cs" />
-    <Compile Include="IenterfacesMenuMethods.cs" />
+    <Compile Include="MenuActionsHelper.cs" />
+    <Compile Include="InterfacesMenuMethods.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Menus.Core\Menus.Core.csproj">
+      <Project>{8b3c9f2a-4d1e-4b5a-9f7c-2e8a6b1d4c3f}</Project>
+      <Name>Menus.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Menus.Events\Menus.Events.csproj">
       <Project>{1bb2d850-e898-4727-9653-308db6b91591}</Project>
       <Name>Menus.Events</Name>
@@ -53,7 +58,6 @@
       <Name>Menus.Interfaces</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="assets\navigation.ico" />
   </ItemGroup>
