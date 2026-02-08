@@ -58,7 +58,6 @@
       <Name>Menus.Interfaces</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="assets\navigation.ico" />
   </ItemGroup>

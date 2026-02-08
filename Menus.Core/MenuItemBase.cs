@@ -13,6 +13,7 @@ namespace Menus.Core
     {
         protected readonly string r_Title;
         protected readonly List<TMenuItem> r_ChildrenMenuItems;
+        private readonly ReadOnlyCollection<TMenuItem> r_ChildrenMenuItemsReadOnly;
         protected TMenuItem m_ParentMenuItem;
         protected const int k_BackAndExitOptionNumber = 0;
 
@@ -30,6 +31,7 @@ namespace Menus.Core
 
             r_Title = i_Title;
             r_ChildrenMenuItems = new List<TMenuItem>();
+            r_ChildrenMenuItemsReadOnly = r_ChildrenMenuItems.AsReadOnly();
             m_ParentMenuItem = null;
         }
 
@@ -50,7 +52,7 @@ namespace Menus.Core
         /// <summary>
         /// Gets a read-only view of the direct child menu items of this menu.
         /// </summary>
-        internal IReadOnlyList<TMenuItem> ChildrenMenuItems => r_ChildrenMenuItems.AsReadOnly();
+        internal IReadOnlyList<TMenuItem> ChildrenMenuItems => r_ChildrenMenuItemsReadOnly;
 
         /// <summary>
         /// Indicates whether this item is an action item (vs. a submenu).
@@ -141,7 +143,8 @@ namespace Menus.Core
         /// <summary>
         /// Returns the next menu to display based on the user's choice, or null to exit.
         /// For choice 0: returns the parent (or null at root). For choice N: either returns
-        /// the child submenu to display, or invokes the action and returns the parent.
+        /// the child submenu to display, or invokes the action and returns the current menu
+        /// so the user stays on the same menu after the action.
         /// </summary>
         /// <param name="i_Choice">The user's choice (0 = back/exit, 1..N = child index).</param>
         /// <returns>The next menu to display, or null to exit.</returns>
@@ -154,29 +157,20 @@ namespace Menus.Core
 
             TMenuItem selectedItem = r_ChildrenMenuItems[i_Choice - 1];
 
-            if (selectedItem.r_ChildrenMenuItems.Count > 0)
+            if (selectedItem.IsActionItem)
             {
-                if (selectedItem.IsActionItem)
+                if (selectedItem.r_ChildrenMenuItems.Count > 0)
                 {
                     throw new InvalidOperationException(
                         "Invalid menu state: item has both children and an action.");
                 }
 
-                return selectedItem;
+                selectedItem.InvokeAction();
+                return (TMenuItem)this;
             }
             else
             {
-                if (selectedItem.IsActionItem)
-                {
-                    selectedItem.InvokeAction();
-                    return m_ParentMenuItem;
-                }
-                else
-                {
-                    throw new InvalidOperationException(
-                        "You defined this Menu Item such that it has other Menu Items under it, " +
-                        "so you need to add Menu items under it that you will see them.");
-                }
+                return selectedItem;
             }
         }
 
@@ -214,20 +208,18 @@ namespace Menus.Core
                 k_BackAndExitOptionNumber, r_ChildrenMenuItems.Count);
             string userOption = Console.ReadLine() ?? string.Empty;
 
-            while (!validUserChoice(userOption))
+            int choice;
+            while (!tryParseUserChoice(userOption, out choice))
             {
                 Console.WriteLine("The number you entered is invalid, please enter again (only number between {0} to {1}):",
                     k_BackAndExitOptionNumber, r_ChildrenMenuItems.Count);
                 userOption = Console.ReadLine() ?? string.Empty;
             }
 
-            int choice;
-            int.TryParse(userOption, out choice);
-
             return choice;
         }
 
-        private bool validUserChoice(string i_UserChoiceString)
+        private bool tryParseUserChoice(string i_UserChoiceString, out int o_Choice)
         {
             int userChoiceNumber;
             bool isParsed = int.TryParse(i_UserChoiceString, out userChoiceNumber);
@@ -235,6 +227,7 @@ namespace Menus.Core
                 userChoiceNumber >= k_BackAndExitOptionNumber &&
                 userChoiceNumber <= r_ChildrenMenuItems.Count;
 
+            o_Choice = userChoiceNumber;
             return validNumberChoice;
         }
 
