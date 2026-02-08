@@ -59,17 +59,19 @@ Top level:
 
 If you prefer running the project without opening it in an IDE, download the ready-to-run build from **GitHub Releases**:
 
-- **Latest Release:** `https://github.com/dorhaboosha/Hierarchical-Menu-System/releases/latest`
+- **Latest Release page:** https://github.com/dorhaboosha/Hierarchical-Menu-System/releases/latest
 
 ### Option A: Download the executable (recommended)
-1. Go to the **Latest Release** link above.
-2. Download the attached ZIP (for example: `Hierarchical-Menu-System.exe.zip`).
-3. Extract the ZIP to any folder.
-4. Run the executable:
+1. Download the ZIP release asset:
+   - `HierarchicalMenuSystem-V1.0.0.zip`
+2. **Extract** the ZIP to a folder (don’t run the exe from inside the zip).
+3. Run:
    - `Menus.Test.exe`
 
-> Note: Keep all extracted files together in the same folder (the `.exe` and any accompanying `.dll` files), otherwise the app may not start.
+> Note: Keep all extracted files together in the same folder (the `.exe` and the `.dll` files), otherwise the app may not start.
 
 ### Option B: Download source code (GitHub auto-generated)
 In the release page, GitHub also provides **Source code (zip)** / **Source code (tar.gz)**.  
 These are auto-generated snapshots of the repository at that release tag (for developers who want to build locally).
+
+---
