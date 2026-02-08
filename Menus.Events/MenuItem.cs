@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,14 +6,28 @@ using System.Threading.Tasks;
 
 namespace Menus.Events
 {
+    /// <summary>
+    /// Represents a single item in the hierarchical menu. Can act as either a submenu
+    /// (containing child items) or an action item (with a handler subscribed to <see cref="MenuItemChosen"/>).
+    /// </summary>
     public class MenuItem
     {
         private readonly string r_Title;
         private readonly List<MenuItem> r_ChildrenMenuItems;
+
+        /// <summary>
+        /// Raised when this menu item is selected and it is an action item (has no children).
+        /// Subscribe to this event to perform an action when the user chooses this option.
+        /// </summary>
         public event Action MenuItemChosen;
+
         private MenuItem m_ParentMenuItem;
         private const int k_BackAndExitOptionNumber = 0;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="MenuItem"/> class with the specified title.
+        /// </summary>
+        /// <param name="i_Title">The title displayed for this menu option.</param>
         public MenuItem(string i_Title)
         {
             r_Title = i_Title;
@@ -21,6 +35,9 @@ namespace Menus.Events
             m_ParentMenuItem = null;
         }
 
+        /// <summary>
+        /// Gets the title of this menu item.
+        /// </summary>
         internal string Title
         {
             get
@@ -29,6 +46,9 @@ namespace Menus.Events
             }
         }
 
+        /// <summary>
+        /// Gets or sets the parent menu item. Used internally for navigation hierarchy.
+        /// </summary>
         internal MenuItem ParentMenu
         {
             get
@@ -42,6 +62,9 @@ namespace Menus.Events
             }
         }
 
+        /// <summary>
+        /// Gets the direct child menu items of this menu.
+        /// </summary>
         internal List<MenuItem> ChildrenMenuItems
         {
             get
@@ -50,6 +73,12 @@ namespace Menus.Events
             }
         }
 
+        /// <summary>
+        /// Adds a child menu item to this menu. Only valid for submenu items (those without
+        /// a <see cref="MenuItemChosen"/> handler).
+        /// </summary>
+        /// <param name="i_MenuItem">The menu item to add as a child.</param>
+        /// <exception cref="FormatException">Thrown when this item is an action item and cannot have children.</exception>
         public void AddMenuItem(MenuItem i_MenuItem)
         {
             if (MenuItemChosen == null)
@@ -63,6 +92,12 @@ namespace Menus.Events
             }
         }
 
+        /// <summary>
+        /// Removes a child menu item from this menu.
+        /// </summary>
+        /// <param name="i_MenuItem">The menu item to remove.</param>
+        /// <exception cref="Exception">Thrown when the item has no children to remove.</exception>
+        /// <exception cref="FormatException">Thrown when attempting to remove from an action item.</exception>
         public void RemoveMenuItem(MenuItem i_MenuItem)
         {
             if (i_MenuItem.MenuItemChosen == null)
@@ -83,6 +118,11 @@ namespace Menus.Events
             }
         }
 
+        /// <summary>
+        /// Handles the selection of this menu item. If it has children, shows the submenu;
+        /// otherwise invokes the <see cref="MenuItemChosen"/> event.
+        /// </summary>
+        /// <exception cref="FormatException">Thrown when a submenu item has no children defined.</exception>
         protected virtual void OnMenuItemChosen()
         {
             if (r_ChildrenMenuItems.Count > 0)
@@ -107,6 +147,9 @@ namespace Menus.Events
             }
         }
 
+        /// <summary>
+        /// Displays this menu's options and prompts the user for a choice.
+        /// </summary>
         internal void Show()
         {
             showTitle();
@@ -194,6 +237,10 @@ namespace Menus.Events
             return !inputIsNullOrEmpty && inputIsOneNumber && validNumberChoice;
         }
 
+        /// <summary>
+        /// Returns the title of this menu item.
+        /// </summary>
+        /// <returns>The menu item's display title.</returns>
         public override string ToString()
         {
             return Title;
